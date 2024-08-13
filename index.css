@@ -28,6 +28,7 @@ p {
     display: inline-block;
     padding: 10px;
     background: #ccc;
+    width: 120px;
     cursor: pointer;
     border-radius: 5px;
     border: 1px solid #ccc;

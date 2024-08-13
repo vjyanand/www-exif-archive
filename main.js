@@ -2,6 +2,8 @@ function makeTable(data) {
     let result = JSON.parse(data);
     let exif = result["exif"];
 
+    exif.unshift({ "label": "Mime", "value": result["mime"], "key": "mime", "desc": "Mime type", "typeName": "" })
+    exif.unshift({ "label": "Byte Order", "value": (result["byte_order"] == 1 ? "littleEndian" : "bigEndian"), "key": "byte_order", "desc": "Byte Order", "typeName": "" })
     const table_div = document.getElementById("exif-div"), tbl = document.createElement('table');
     tbl.setAttribute("id", "exif-table")
     for (const index in exif) {

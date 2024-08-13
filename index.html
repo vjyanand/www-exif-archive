@@ -4,20 +4,25 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>hello-wasm</title>
+    <title>exif tool</title>
     <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
-
-<div id="drop-area">
-    <form class="my-form">
-        <p>Upload a file with the file dialog or by dragging and dropping files onto the dashed region</p>
-        <input type="file" id="file_picker">
-        <label class="button" for="file_picker">Select file</label>
-    </form>
-</div>
+    <h2 style="text-align: center;">
+        A multimedia file metadata tool
+    </h2>
+    <div id="drop-area">
+        <form class="my-form">
+            <p>Add a file with the file dialog or by dragging and dropping files onto the dashed region</p>
+            <input type="file" id="file_picker">
+            <div style="text-align:center;">
+                <label class="button" for="file_picker">Select file</label>
+            </div>
+        </form>
+    </div>
     <div id="exif-div"></div>
     <script type="module" src="/main.js"></script>
 </body>
+
 </html>
