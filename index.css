@@ -1,0 +1,86 @@
+#drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 20px;
+    width: 200px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+@media screen and (min-width: 80rem) {
+    #drop-area {
+        width: 450px;
+    }
+}
+
+#drop-area.highlight {
+    border-color: purple;
+}
+
+p {
+    margin-top: 0;
+}
+
+.my-form {
+    margin-bottom: 10px;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px;
+    background: #ccc;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.button:hover {
+    background: #ddd;
+}
+
+#file_picker {
+    display: none;
+}
+
+#exif-table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#exif-table td,
+#exif-table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    white-space: nowrap;
+}
+
+#exif-table td:nth-child(2) {
+    padding-left: 30px;
+}
+
+#exif-table td:first-child {
+    padding-right: 150px;
+    padding-left: 50px;
+}
+
+#exif-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#exif-table tr:hover {
+    background-color: #ddd;
+}
+
+#exif-table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+}
+
+#exif-table span {
+    padding-left: 10px;
+    font-weight: bold;
+    font-size: medium;
+}
