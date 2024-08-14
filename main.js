@@ -16,10 +16,7 @@ function makeTable(data) {
         const outer_span = document.createElement("span")
         outer_span.className = "tooltip"
         outer_span.innerText = "ⓘ"
-        const inner_span = document.createElement("span")
-        inner_span.innerText = row["desc"]
-        inner_span.className = "tooltiptext"
-        outer_span.appendChild(inner_span)
+        outer_span.setAttribute("title", row["desc"])
         td_label.appendChild(document.createTextNode(row["label"]));
         td_label.appendChild(outer_span);
         const td_value = tr.insertCell();
