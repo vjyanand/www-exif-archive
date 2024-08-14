@@ -2,10 +2,10 @@ function makeTable(data) {
     let result = JSON.parse(data);
     let exif = result["exif"];
 
-    exif.unshift({ "label": "Mime", "value": result["mime"], "key": "mime", "desc": "Mime type", "typeName": "" })
-    exif.unshift({ "label": "Pixel Height", "value": result["height"] , "key": "pixel_height", "desc": "Pixel Height", "typeName": "" })
-    exif.unshift({ "label": "Pixel Width", "value": result["width"] , "key": "pixel_width", "desc": "Pixel Width", "typeName": "" })
-    exif.unshift({ "label": "Byte Order", "value": (result["byte_order"] == 1 ? "littleEndian" : "bigEndian"), "key": "byte_order", "desc": "Byte Order", "typeName": "" })
+    exif.unshift({ "label": "Mime", "value": result["mime"], "key": "mime", "typeName": "" })
+    exif.unshift({ "label": "Pixel Height", "value": result["height"], "key": "pixel_height", "typeName": "" })
+    exif.unshift({ "label": "Pixel Width", "value": result["width"], "key": "pixel_width", "typeName": "" })
+    exif.unshift({ "label": "Byte Order", "value": (result["byte_order"] == 1 ? "littleEndian" : "bigEndian"), "key": "byte_order", "typeName": "" })
 
     const table_div = document.getElementById("exif-div"), tbl = document.createElement('table');
     tbl.setAttribute("id", "exif-table")
@@ -13,16 +13,18 @@ function makeTable(data) {
         const row = exif[index]
         const tr = tbl.insertRow();
         const td_label = tr.insertCell();
-        const outer_span = document.createElement("span")
-        outer_span.className = "tooltip"
-        outer_span.innerText = "ⓘ"
-        outer_span.setAttribute("title", row["desc"])
         td_label.appendChild(document.createTextNode(row["label"]));
-        td_label.appendChild(outer_span);
+        if (row["desc"]) {
+            const outer_span = document.createElement("span")
+            outer_span.innerText = "ⓘ"
+            outer_span.setAttribute("data-bs-toggle", "tooltip")
+            outer_span.setAttribute("data-bs-title", row["desc"])
+            new bootstrap.Tooltip(outer_span)
+            td_label.appendChild(outer_span);
+        }
         const td_value = tr.insertCell();
         td_value.appendChild(document.createTextNode(row["value"]));
         tr.setAttribute("data-key", row["key"])
-        tr.setAttribute("data-desc", row["desc"])
         tr.setAttribute("data-type", row["typeName"])
     }
     table_div.firstChild && table_div.firstChild.remove()

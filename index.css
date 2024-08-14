@@ -86,7 +86,11 @@ p {
     font-size: medium;
 }
 
-.tooltip {
-    position: relative;
-    display: inline-block;
+.tooltip-inner {
+    color: white;
+    background-color: black;
+    white-space: wrap;
+    max-width: 250px;
+    padding: 10px;
+
 }
