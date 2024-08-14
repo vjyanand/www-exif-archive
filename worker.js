@@ -2,7 +2,6 @@
 importScripts('/exif-wasm.js?a');
 let exif_parser = null
 onmessage = async function (e) {
-    console.log(e);
     const action = e.data.type;
     switch (action) {
         case 'file':
@@ -18,7 +17,7 @@ onmessage = async function (e) {
 
 exif_delete = async function (key) {
     let result = exif_parser.exif_delete(key)
-    console.log(result)
+    this.postMessage({ type: 'delete', data: result })
 }
 
 exif_file = async function (file) {
@@ -37,7 +36,7 @@ exif_file = async function (file) {
     FS.close(stream)
     exif_parser = new Module.ExifParser(filename, fRandom)
     let result = exif_parser.exif_read()
-    this.postMessage(result)
+    this.postMessage({ type: 'exif', data: result })
 }
 
 Module.onRuntimeInitialized = function () {

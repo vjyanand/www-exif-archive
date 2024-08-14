@@ -32,7 +32,21 @@ window.onload = (event) => {
         }
         reader.readAsArrayBuffer(file)
         myWorker.onmessage = function (e) {
-            makeTable(e.data)
+            let result = e.data
+            switch (result.type) {
+                case 'exif':
+                    makeTable(result.data)
+                    break;
+                case 'delete':
+                    let payload = JSON.parse(result.data)
+                    if (payload["success"]) {
+                        removeRow(payload["key"])
+                    }
+                    console.log(payload)
+                    break;
+                default:
+                    console.log("default")
+            }
         }
     }
 
@@ -40,6 +54,13 @@ window.onload = (event) => {
         let file = this.files[0];
         handleFile(file)
     })
+
+    function removeRow(key) {
+        let row = document.querySelectorAll(`[data-key="${key}"]`);
+        if(row.length === 1) {
+            row[0].style.display = 'none';
+        }
+    }
 
     function makeTable(data) {
         let result = JSON.parse(data);
