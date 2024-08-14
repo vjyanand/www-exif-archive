@@ -3,19 +3,27 @@ function makeTable(data) {
     let exif = result["exif"];
 
     exif.unshift({ "label": "Mime", "value": result["mime"], "key": "mime", "desc": "Mime type", "typeName": "" })
+    exif.unshift({ "label": "Pixel Height", "value": result["height"] , "key": "pixel_height", "desc": "Pixel Height", "typeName": "" })
+    exif.unshift({ "label": "Pixel Width", "value": result["width"] , "key": "pixel_width", "desc": "Pixel Width", "typeName": "" })
     exif.unshift({ "label": "Byte Order", "value": (result["byte_order"] == 1 ? "littleEndian" : "bigEndian"), "key": "byte_order", "desc": "Byte Order", "typeName": "" })
+
     const table_div = document.getElementById("exif-div"), tbl = document.createElement('table');
     tbl.setAttribute("id", "exif-table")
     for (const index in exif) {
         const row = exif[index]
         const tr = tbl.insertRow();
-        const td1 = tr.insertCell();
-        const span = document.createElement("span")
-        span.innerText = "ⓘ"
-        td1.appendChild(document.createTextNode(row["label"]));
-        td1.appendChild(span);
-        const td2 = tr.insertCell();
-        td2.appendChild(document.createTextNode(row["value"]));
+        const td_label = tr.insertCell();
+        const outer_span = document.createElement("span")
+        outer_span.className = "tooltip"
+        outer_span.innerText = "ⓘ"
+        const inner_span = document.createElement("span")
+        inner_span.innerText = row["desc"]
+        inner_span.className = "tooltiptext"
+        outer_span.appendChild(inner_span)
+        td_label.appendChild(document.createTextNode(row["label"]));
+        td_label.appendChild(outer_span);
+        const td_value = tr.insertCell();
+        td_value.appendChild(document.createTextNode(row["value"]));
         tr.setAttribute("data-key", row["key"])
         tr.setAttribute("data-desc", row["desc"])
         tr.setAttribute("data-type", row["typeName"])
