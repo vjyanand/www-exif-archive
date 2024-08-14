@@ -1,11 +1,30 @@
 
 importScripts('/exif-wasm.js?a');
-
+let exif_parser = null
 onmessage = async function (e) {
-    let f = e.data.file
+    console.log(e);
+    const action = e.data.type;
+    switch (action) {
+        case 'file':
+            await exif_file(e.data.file)
+            break;
+        case 'delete':
+            await exif_delete(e.data.exif_key)
+            break;
+        default:
+            console.log("default")
+    }
+}
+
+exif_delete = async function (key) {
+    let result = exif_parser.exif_delete(key)
+    console.log(result)
+}
+
+exif_file = async function (file) {
     let hashHex = "tmppdf"
     if (crypto.subtle) {
-        const hashBuffer = await crypto.subtle.digest("SHA-256", f)
+        const hashBuffer = await crypto.subtle.digest("SHA-256", file)
         const hashArray = Array.from(new Uint8Array(hashBuffer))
         hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("")
     }
@@ -14,13 +33,13 @@ onmessage = async function (e) {
 
     let filename = fName
     let stream = FS.open(filename, 'w+')
-    FS.write(stream, f, 0, f.length, 0)
+    FS.write(stream, file, 0, file.length, 0)
     FS.close(stream)
-    let exif_parser = new Module.ExifParser(filename, fRandom)
+    exif_parser = new Module.ExifParser(filename, fRandom)
     let result = exif_parser.exif_read()
     this.postMessage(result)
 }
 
-Module.onRuntimeInitialized = function() {
+Module.onRuntimeInitialized = function () {
     console.log("Initilized")
 }
