@@ -44,6 +44,13 @@ window.onload = (event) => {
                     }
                     console.log(payload)
                     break;
+                case 'delete_all':
+                    let payload_delete_all = JSON.parse(result.data)
+                    console.log(payload_delete_all)
+                    break;
+                case 'download':
+                    downloadBlob(result.data, "a.jpeg", 'image/jpeg')
+                    break;
                 default:
                     console.log("default")
             }
@@ -57,7 +64,7 @@ window.onload = (event) => {
 
     function removeRow(key) {
         let row = document.querySelectorAll(`[data-key="${key}"]`);
-        if(row.length === 1) {
+        if (row.length === 1) {
             row[0].style.display = 'none';
         }
     }
@@ -96,8 +103,26 @@ window.onload = (event) => {
             delete_span.addEventListener("click", delete_exif);
             td_delete.appendChild(delete_span)
         }
-        table_div.firstChild && table_div.firstChild.remove()
+        while(table_div.firstChild) {
+            table_div.removeChild(table_div.lastChild) 
+        }
+        let button_delete = document.createElement("button")
+        button_delete.innerHTML = 'Remove All';
+        button_delete.className = "delete_all"
+        button_delete.addEventListener("click", delete_all_exif);
+        table_div.appendChild(button_delete);
+
+        let button_download = document.createElement("button")
+        button_download.innerHTML = 'Download';
+        button_download.className = "download"
+        button_download.addEventListener("click", download_file);
+        table_div.appendChild(button_download);
+
         table_div.appendChild(tbl);
+    }
+
+    function download_file(e) {
+        myWorker.postMessage({ type: "download" })
     }
 
     function delete_exif(e) {
@@ -105,6 +130,28 @@ window.onload = (event) => {
         myWorker.postMessage({ type: "delete", exif_key: exif_key })
     }
 
+    function delete_all_exif(e) {
+        myWorker.postMessage({ type: "delete_all" })
+    }
+
+}
+const downloadBlob = (data, fileName, mimeType) => {
+    const blob = new Blob([data], {
+        type: mimeType
+    })
+    const url = window.URL.createObjectURL(blob)
+    downloadURL(url, fileName)
+    setTimeout(() => window.URL.revokeObjectURL(url), 1000)
+}
+
+const downloadURL = (data, fileName) => {
+    const a = document.createElement('a')
+    a.href = data
+    a.download = fileName
+    document.body.appendChild(a)
+    a.style.display = 'none'
+    a.click()
+    a.remove()
 }
 
 function preventDefaults(e) {
