@@ -38,16 +38,15 @@ file_download = async function () {
 }
 
 exif_file = async function (file) {
-    let hashHex = "tmppdf"
+    let hashHex = "tmp"
     if (crypto.subtle) {
         const hashBuffer = await crypto.subtle.digest("SHA-256", file)
         const hashArray = Array.from(new Uint8Array(hashBuffer))
         hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("")
     }
-    const fName = hashHex.slice(0, hashHex.length / 2)
+    filename = hashHex.slice(0, hashHex.length / 2)
     const fRandom = hashHex.slice(hashHex.length / 2, hashHex.length)
 
-    filename = fName
     let stream = FS.open(filename, 'w+')
     FS.write(stream, file, 0, file.length, 0)
     FS.close(stream)

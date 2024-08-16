@@ -97,6 +97,7 @@ window.onload = (event) => {
             td_value.appendChild(document.createTextNode(row["value"]));
             tr.setAttribute("data-key", row["key"])
             tr.setAttribute("data-type", row["typeName"])
+            tr.setAttribute("data-raw-value", row["value"])
             const td_delete = tr.insertCell();
             const delete_span = document.createElement("span")
             delete_span.innerText = "⌫"
@@ -133,9 +134,11 @@ window.onload = (event) => {
     function delete_all_exif(e) {
         myWorker.postMessage({ type: "delete_all" })
     }
-
 }
-const downloadBlob = (data, fileName, mimeType) => {
+
+const downloadBlob = (data, fileName) => {
+    let row = document.querySelectorAll("[data-key=mime]");
+    let mimeType = row && row[0] && row[0].getAttribute("data-raw-value")
     const blob = new Blob([data], {
         type: mimeType
     })
