@@ -1,10 +1,13 @@
 <template>
-  <div id="exif-div">
+  <div id="exif-div" class="exif-div">
 
   </div>
 </template>
 
 <style scoped>
+.exif-div {
+  background-color: bisque;
+}
 
 .flex-container {
     display: flex;
