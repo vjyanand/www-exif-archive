@@ -25,17 +25,17 @@ onmessage = async function (e) {
 
 const exif_delete_all = async function (key) {
   let result = exif_parser.exif_delete_all()
-  this.postMessage({ type: 'delete_all', data: result })
+  postMessage({ type: 'delete_all', data: result })
 }
 
 const exif_delete = async function (key) {
   let result = exif_parser.exif_delete(key)
-  this.postMessage({ type: 'delete', data: result })
+  postMessage({ type: 'delete', data: result })
 }
 
 const file_download = async function () {
   let result = FS.readFile(filename, { encoding: 'binary' })
-  this.postMessage({ type: 'download', data: result })
+  postMessage({ type: 'download', data: result })
 }
 
 const exif_file = async function (file) {
@@ -54,7 +54,7 @@ const exif_file = async function (file) {
   exif_parser && exif_parser.delete()
   exif_parser = new Module.ExifParser(filename, fRandom)
   let result = exif_parser.exif_read()
-  this.postMessage({ type: 'exif', data: result })
+  postMessage({ type: 'exif', data: result })
 }
 
 Module.onRuntimeInitialized = function () {
