@@ -23,22 +23,22 @@ onmessage = async function (e) {
   }
 }
 
-exif_delete_all = async function (key) {
+const exif_delete_all = async function (key) {
   let result = exif_parser.exif_delete_all()
   this.postMessage({ type: 'delete_all', data: result })
 }
 
-exif_delete = async function (key) {
+const exif_delete = async function (key) {
   let result = exif_parser.exif_delete(key)
   this.postMessage({ type: 'delete', data: result })
 }
 
-file_download = async function () {
+const file_download = async function () {
   let result = FS.readFile(filename, { encoding: 'binary' })
   this.postMessage({ type: 'download', data: result })
 }
 
-exif_file = async function (file) {
+const exif_file = async function (file) {
   let hashHex = "tmp"
   if (crypto.subtle) {
       const hashBuffer = await crypto.subtle.digest("SHA-256", file)
