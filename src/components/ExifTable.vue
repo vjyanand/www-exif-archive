@@ -1,35 +1,81 @@
-<template>
-  <div id="exif-div" class="exif-div">
+<script setup>
+import { ref, onMounted } from 'vue'
+import { usePageStore } from '@/stores/exif'
+import NoTable from './NoTable.vue'
+const pageStore = usePageStore()
+const mtable = ref() //Ref to table
+const noTableData = ref(false)
 
+onMounted(() => {
+  const data = pageStore.table_data
+  let result = JSON.parse(data);
+  let exif = result["exif"];
+
+  exif.unshift({ "label": "Mime", "value": result["mime"], "key": "mime", "typeName": "" })
+  exif.unshift({ "label": "Pixel Height", "value": result["height"], "key": "pixel_height", "typeName": "" })
+  exif.unshift({ "label": "Pixel Width", "value": result["width"], "key": "pixel_width", "typeName": "" })
+  exif.unshift({ "label": "Byte Order", "value": (result["byte_order"] == 1 ? "littleEndian" : "bigEndian"), "key": "byte_order", "typeName": "" })
+
+  const tbl = mtable.value;
+  for (const index in exif) {
+    const row = exif[index]
+    const tr = tbl.insertRow();
+    const td_label = tr.insertCell();
+    td_label.appendChild(document.createTextNode(row["label"]));
+    if (row["desc"]) {
+      const outer_span = document.createElement("span")
+      outer_span.innerText = "ⓘ"
+      outer_span.setAttribute("data-bs-toggle", "tooltip")
+      outer_span.setAttribute("data-bs-title", row["desc"])
+      td_label.appendChild(outer_span);
+    }
+    const td_value = tr.insertCell();
+    td_value.appendChild(document.createTextNode(row["value"]));
+    tr.setAttribute("data-key", row["key"])
+    tr.setAttribute("data-type", row["typeName"])
+    tr.setAttribute("data-raw-value", row["value"])
+    const td_delete = tr.insertCell();
+    const delete_span = document.createElement("span")
+    delete_span.innerText = "⌫"
+    delete_span.addEventListener("click", delete_exif);
+    td_delete.appendChild(delete_span)
+  }
+
+  function delete_exif(e) {
+
+  }
+
+})
+</script>
+<template>
+  <div class="min-h-screen p-2 overflow-x-auto relative md:mb-12">
+    <table class="select-none font-lato max-w-5xl mx-auto my-2" ref="mtable"></table>
+    <NoTable v-if="noTableData" />
   </div>
 </template>
 
 <style scoped>
-.exif-div {
-  background-color: bisque;
-}
-
 .flex-container {
-    display: flex;
+  display: flex;
 }
 
 table,
 th,
 td {
-    border: 1px solid rgb(207, 207, 207);
-    border-collapse: collapse;
+  border: 1px solid rgb(207, 207, 207);
+  border-collapse: collapse;
 }
 
 th,
 td {
-    padding: 10px;
+  padding: 10px;
 }
 
 tr:nth-child(odd) {
-    background-color: #f9f9f9;
-}
-tr:nth-child(even) {
-    background-color: #fcfcfc;
+  background-color: #f9f9f9;
 }
 
+tr:nth-child(even) {
+  background-color: #fcfcfc;
+}
 </style>

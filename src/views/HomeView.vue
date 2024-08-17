@@ -12,8 +12,8 @@ pageStore.setWorker(worker)
 
 <template>
   <main class="flex-1 overflow-y-auto md:mb-14 lg:mt-8 lg:mb-24">
-    <FileSelect />
+    <FileSelect v-if="pageStore.work_flow_state === 'LANDING'"/>
     <Actions />
-    <ExifTable />
+    <ExifTable v-if="pageStore.work_flow_state === 'LIST'"/>
   </main>
 </template>
