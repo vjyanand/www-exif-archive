@@ -1,0 +1,32 @@
+[[headers]]
+  for = "/assets/exif_wasm.wasm"
+  [headers.values]
+    cache-control = "cache-control: no-cache"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    cache-control = "public, max-age=604802"
+    
+[[redirects]]
+  from = "http://pdf.iavian.net/*"
+  to = "https://pdftableconvert.com/"
+  status = 310
+  force = true 
+
+[[redirects]]
+  from = "https://pdf.iavian.net/*"
+  to = "https://pdftableconvert.com/"
+  status = 310
+  force = true 
+  
+[[redirects]]
+  from = "/blog/*"
+  to = "https://tangerine-unicorn-640bd7.netlify.app/:splat"
+  status = 200
+  force = true
+  
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
