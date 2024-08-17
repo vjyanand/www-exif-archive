@@ -6,6 +6,7 @@ export const usePageStore = defineStore('exif', () => {
   const work_flow_state = ref("LANDING") // "LANDING", "LIST"
   const exif_changed = ref(false)
   const table_data = ref(null)
+  const worker_initialized = ref(false)
 
   function setWorker(worker) {
     pworker.value = worker
@@ -19,5 +20,5 @@ export const usePageStore = defineStore('exif', () => {
     table_data.value = null
   }
 
-  return { table_data, setTableData, clearTableData, work_flow_state, exif_changed, pworker, setWorker }
+  return { worker_initialized, table_data, setTableData, clearTableData, work_flow_state, exif_changed, pworker, setWorker }
 })

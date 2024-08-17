@@ -7,6 +7,10 @@ const pageStore = usePageStore()
 pageStore.pworker.onmessage = function (e) {
   let result = e.data
   switch (result.type) {
+    case 'wasm':
+      pageStore.worker_initialized = true;
+      console.log("Initilized")
+      break;
     case 'exif':
       pageStore.work_flow_state = 'LIST'
       pageStore.setTableData(result.data)

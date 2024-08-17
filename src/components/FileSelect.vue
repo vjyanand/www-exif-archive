@@ -70,7 +70,8 @@ function preventDefaults(e) {
           <p>Add a file with the file dialog or by dragging and dropping files onto the dashed region</p>
           <input type="file" id="file_picker">
           <div style="text-align:center;">
-            <label class="button text-white bg-blue-400 dark:bg-blue-500  rounded-lg text-sm px-5 py-2.5 text-center"
+            <label :disabled="!pageStore.worker_initialized"
+              class="button text-white bg-blue-400 dark:bg-blue-500  rounded-lg text-sm px-5 py-2.5 text-center"
               for="file_picker">Select file</label>
           </div>
         </form>

@@ -6,20 +6,20 @@ let filename = null
 onmessage = async function (e) {
   const action = e.data.type;
   switch (action) {
-      case 'file':
-          await exif_file(e.data.file)
-          break;
-      case 'delete':
-          await exif_delete(e.data.exif_key)
-          break;
-      case 'delete_all':
-          await exif_delete_all()
-          break;
-      case 'download':
-          await file_download()
-          break;
-      default:
-          console.log("default")
+    case 'file':
+      await exif_file(e.data.file)
+      break;
+    case 'delete':
+      await exif_delete(e.data.exif_key)
+      break;
+    case 'delete_all':
+      await exif_delete_all()
+      break;
+    case 'download':
+      await file_download()
+      break;
+    default:
+      console.log("default")
   }
 }
 
@@ -41,9 +41,9 @@ const file_download = async function () {
 const exif_file = async function (file) {
   let hashHex = "tmp"
   if (crypto.subtle) {
-      const hashBuffer = await crypto.subtle.digest("SHA-256", file)
-      const hashArray = Array.from(new Uint8Array(hashBuffer))
-      hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("")
+    const hashBuffer = await crypto.subtle.digest("SHA-256", file)
+    const hashArray = Array.from(new Uint8Array(hashBuffer))
+    hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("")
   }
   filename = hashHex.slice(0, hashHex.length / 2)
   const fRandom = hashHex.slice(hashHex.length / 2, hashHex.length)
@@ -58,6 +58,6 @@ const exif_file = async function (file) {
 }
 
 Module.onRuntimeInitialized = function () {
-  console.log("Initilized")
+  postMessage({ type: 'wasm', data: {} })
 }
 
