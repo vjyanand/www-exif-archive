@@ -88,7 +88,7 @@ const closeMobileMenu = () => {
               class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 hover:text-blue-700"
               to="/help" @click="closeMobileMenu">Help</RouterLink>
             
-            <a class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 hover:text-blue-700" href="mailto:help@pdftableconvert.com">
+            <a class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 hover:text-blue-700" href="mailto:help@exif.iavian.net">
               Contact
             </a>
           </div>
