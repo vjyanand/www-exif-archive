@@ -2,6 +2,8 @@
 import { ref, onMounted } from 'vue'
 import { usePageStore } from '@/stores/exif'
 import NoTable from './NoTable.vue'
+import { Tooltip } from 'flowbite';
+
 const pageStore = usePageStore()
 const mtable = ref() //Ref to table
 const noTableData = ref(false)
@@ -25,9 +27,17 @@ onMounted(() => {
     if (row["desc"]) {
       const outer_span = document.createElement("span")
       outer_span.innerText = "ⓘ"
-      outer_span.setAttribute("data-bs-toggle", "tooltip")
-      outer_span.setAttribute("data-bs-title", row["desc"])
       td_label.appendChild(outer_span);
+
+      const tooltip_span = document.createElement("span")
+      tooltip_span.innerText = row["desc"]
+      tooltip_span.setAttribute("role", "tooltip");
+      tooltip_span.className = "tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700";
+      
+      td_label.appendChild(outer_span);
+      td_label.appendChild(tooltip_span);
+
+      const tooltip = new Tooltip(tooltip_span, outer_span);
     }
     const td_value = tr.insertCell();
     td_value.appendChild(document.createTextNode(row["value"]));

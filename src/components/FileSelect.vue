@@ -59,7 +59,6 @@ function preventDefaults(e) {
   e.stopPropagation()
 }
 
-
 </script>
 
 <template class="mx-auto bg-white min-h-screen flex flex-col items-center justify-center h-full py-4 px-8">
@@ -78,6 +77,7 @@ function preventDefaults(e) {
       </div>
     </section>
   </div>
+
 </template>
 
 <style scoped>
