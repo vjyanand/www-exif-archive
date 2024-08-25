@@ -34,6 +34,11 @@ onMounted(() => {
       tooltip_span.setAttribute("role", "tooltip");
       tooltip_span.className = "tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700";
       
+      const tooltip_arrow = document.createElement("div")
+      tooltip_arrow.className = "tooltip-arrow"
+      tooltip_arrow.setAttribute("data-popper-arrow", "")
+      tooltip_span.appendChild(tooltip_arrow)
+
       td_label.appendChild(outer_span);
       td_label.appendChild(tooltip_span);
 
