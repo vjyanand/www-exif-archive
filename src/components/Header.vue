@@ -39,12 +39,6 @@ const closeMobileMenu = () => {
 
       <div class="hidden sm:flex items-center justify-between px-2">
         <nav>
-          <RouterLink class="font-inter text:black hover:text-blue-600" to="/">Home</RouterLink>
-          &nbsp;
-          <a class="font-inter text:black hover:text-blue-600" href="/blog">
-            Blog
-          </a>
-          &nbsp;
           <RouterLink class="font-inter text:black hover:text-blue-600" to="/help">
             Help
           </RouterLink>
