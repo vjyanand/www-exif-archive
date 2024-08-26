@@ -13,7 +13,11 @@ onmessage = async function (e) {
       await exif_delete(e.data.exif_key)
       break;
     case 'delete_all':
-      await exif_delete_all()
+      try {
+        await exif_delete_all()
+      } catch (e) {
+        postMessage({ type: 'delete_all', data: false })
+      }
       break;
     case 'download':
       await file_download()

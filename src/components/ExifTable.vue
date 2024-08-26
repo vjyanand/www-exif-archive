@@ -17,7 +17,7 @@ onMounted(() => {
   exif.unshift({ "label": "Pixel Height", "value": result["height"], "key": "pixel_height", "typeName": "" })
   exif.unshift({ "label": "Pixel Width", "value": result["width"], "key": "pixel_width", "typeName": "" })
   exif.unshift({ "label": "Byte Order", "value": (result["byte_order"] == 1 ? "littleEndian" : "bigEndian"), "key": "byte_order", "typeName": "" })
-
+  const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)
   const tbl = mtable.value;
   for (const index in exif) {
     const row = exif[index]
@@ -33,7 +33,7 @@ onMounted(() => {
       tooltip_span.innerText = row["desc"]
       tooltip_span.setAttribute("role", "tooltip");
       tooltip_span.className = "tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700";
-      
+
       const tooltip_arrow = document.createElement("div")
       tooltip_arrow.className = "tooltip-arrow"
       tooltip_arrow.setAttribute("data-popper-arrow", "")
@@ -42,7 +42,8 @@ onMounted(() => {
       td_label.appendChild(outer_span);
       td_label.appendChild(tooltip_span);
 
-      const tooltip = new Tooltip(tooltip_span, outer_span);
+      const tooltip = new Tooltip(tooltip_span, outer_span, { triggerType: isTouch ? 'click' : 'hover', onShow: () => { console.log("A") } });
+
     }
     const td_value = tr.insertCell();
     td_value.appendChild(document.createTextNode(row["value"]));
@@ -57,7 +58,8 @@ onMounted(() => {
   }
 
   function delete_exif(e) {
-
+    let exif_key = e.target.parentNode.parentNode.getAttribute("data-key")
+    pageStore.pworker.postMessage({ type: "delete", exif_key: exif_key })
   }
 
 })
@@ -67,18 +69,6 @@ onMounted(() => {
     <table class="select-none font-lato max-w-5xl mx-auto my-2" ref="mtable"></table>
     <NoTable v-if="noTableData" />
   </div>
-
-
-
-<!-- Light style tooltip -->
-
-<button data-tooltip-target="tooltip-light" data-tooltip-style="light" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Light tooltip</button>
-
-<div id="tooltip-light" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 tooltip">
-    Tooltip content
-    <div class="tooltip-arrow" data-popper-arrow></div>
-</div>
-
 </template>
 
 <style scoped>
