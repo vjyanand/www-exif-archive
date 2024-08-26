@@ -40,6 +40,7 @@ pageStore.pworker.onmessage = function (e) {
 
 const cancelTable = (e) => {
   pageStore.work_flow_state = 'LANDING'
+  pageStore.exif_changed = false
 }
 
 function download_file(e) {
