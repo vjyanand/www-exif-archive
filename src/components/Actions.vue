@@ -1,5 +1,7 @@
 <script setup>
 import { usePageStore } from '@/stores/exif'
+import { Dismiss } from 'flowbite';
+
 const pageStore = usePageStore()
 
 pageStore.pworker.onmessage = function (e) {
@@ -20,6 +22,7 @@ pageStore.pworker.onmessage = function (e) {
           pageStore.exif_changed = true
         }
         removeRow(payload['key'])
+        showToast(`${payload['key']} is removed`)
       }
       console.log(payload)
       break
@@ -27,6 +30,7 @@ pageStore.pworker.onmessage = function (e) {
       let payload_delete_all = JSON.parse(result.data)
       if (pageStore.exif_changed === false && payload_delete_all === true) {
         pageStore.exif_changed = true
+        showToast("All exif metadata removed")
       }
       console.log(payload_delete_all)
       break
@@ -61,13 +65,33 @@ function delete_all_exif(e) {
 const downloadBlob = (data, fileName) => {
   let row = document.querySelector('[data-key="mime"]');
   let mimeType = row.getAttribute("data-raw-value");
-  
+
   const blob = new Blob([data], {
     type: mimeType
   })
   const url = window.URL.createObjectURL(blob)
   downloadURL(url, fileName)
   setTimeout(() => window.URL.revokeObjectURL(url), 1000)
+}
+
+const showToast = (message, type) => {
+  const toast_message = message || ""
+  const toastDiv = document.getElementById("toast")
+  toastDiv.classList.remove("invisible")
+  toastDiv.classList.remove("hidden")
+  toastDiv.classList.remove("transition-opacity")
+  toastDiv.classList.remove("opacity-0")
+  toastDiv.classList.remove("ease-out")
+  const toastMessageDiv = document.getElementById("toast-message")
+  toastMessageDiv.innerText = toast_message
+  toastDiv.classList.add("visible")
+  clearTimeout(pageStore.toast_timer)
+  pageStore.toast_timer = setTimeout(() => {
+    const dismiss = new Dismiss(toastDiv);
+    dismiss.hide();
+  }, 2000);
+
+
 }
 
 const downloadURL = (data, fileName) => {

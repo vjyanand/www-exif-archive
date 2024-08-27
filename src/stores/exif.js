@@ -7,7 +7,8 @@ export const usePageStore = defineStore('exif', () => {
   const exif_changed = ref(false)
   const table_data = ref(null)
   const worker_initialized = ref(false)
-//TODO actions
+  const toast_timer = ref(null)
+  //TODO actions
   function setWorker(worker) {
     pworker.value = worker
   }
@@ -20,5 +21,5 @@ export const usePageStore = defineStore('exif', () => {
     table_data.value = null
   }
 
-  return { worker_initialized, table_data, setTableData, clearTableData, work_flow_state, exif_changed, pworker, setWorker }
+  return { toast_timer, worker_initialized, table_data, setTableData, clearTableData, work_flow_state, exif_changed, pworker, setWorker }
 })
