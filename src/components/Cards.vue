@@ -1,6 +1,6 @@
 <template>
-  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 max-w-5xl mx-auto my-4 py-4 px-8 gap-10">
-    <div class="container flex flex-col items-center p-2 w-full md:w-50 md:h-50 rounded-md">
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 max-w-5xl mx-auto gap-10">
+    <div class="container flex flex-col items-center p-2 w-full rounded-md">
       <img class="h-28 filter-blue" src="/assets/img/secure.svg" alt="secure_logo">
       <h2 class="text-xl font-bold my-2">Secure</h2>
       <p class="font-inter text-md text-gray-700 mb-2 text-center">
