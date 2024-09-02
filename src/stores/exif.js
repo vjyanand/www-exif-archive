@@ -1,25 +1,43 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-
 export const usePageStore = defineStore('exif', () => {
-  const pworker = ref(null)
+  const web_worker = ref(null)
+  const file_name = ref(null)
+  const image_name = ref(null)
+  const worker_initialized = ref(false)
   const work_flow_state = ref("LANDING") // "LANDING", "LIST"
   const exif_changed = ref(false)
-  const table_data = ref(null)
-  const worker_initialized = ref(false)
+  const exif_data = ref(null)
   const toast_timer = ref(null)
-  //TODO actions
+
   function setWorker(worker) {
-    pworker.value = worker
+    web_worker.value = worker
   }
 
   function setTableData(data) {
-    table_data.value = data
+    exif_data.value = data
   }
 
   function clearTableData() {
-    table_data.value = null
+    exif_data.value = null
   }
 
-  return { toast_timer, worker_initialized, table_data, setTableData, clearTableData, work_flow_state, exif_changed, pworker, setWorker }
+  function postMessage(payload) {
+    web_worker.value.postMessage(payload)
+  }
+
+  return {
+    web_worker,
+    work_flow_state,
+    worker_initialized,
+    exif_changed,
+    exif_data,
+    toast_timer,
+    file_name,
+    image_name,
+    clearTableData,
+    setWorker,
+    setTableData,
+    postMessage
+  }
 })

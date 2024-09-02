@@ -1,13 +1,12 @@
 importScripts('/assets/exif-wasm.js?a');
 
 let exif_parser = null
-let filename = null
 
 onmessage = async function (e) {
   const action = e.data.type;
   switch (action) {
     case 'file':
-      await exif_file(e.data.file)
+      await exif_process(e.data.file)
       break;
     case 'delete':
       await exif_delete(e.data.exif_key)
@@ -20,10 +19,10 @@ onmessage = async function (e) {
       }
       break;
     case 'download':
-      await file_download()
+      await file_download(e.data.filename)
       break;
     default:
-      console.log("default")
+      console.log("default - worker")
   }
 }
 
@@ -32,24 +31,24 @@ const exif_delete_all = async function (key) {
   postMessage({ type: 'delete_all', data: result })
 }
 
+const file_download = async function (filename) {
+  let result = FS.readFile(filename, { encoding: 'binary' })
+  postMessage({ type: 'download', data: result })
+}
+
 const exif_delete = async function (key) {
   let result = exif_parser.exif_delete(key)
   postMessage({ type: 'delete', data: result })
 }
 
-const file_download = async function () {
-  let result = FS.readFile(filename, { encoding: 'binary' })
-  postMessage({ type: 'download', data: result })
-}
-
-const exif_file = async function (file) {
+const exif_process = async function (file) {
   let hashHex = "tmp"
   if (crypto.subtle) {
     const hashBuffer = await crypto.subtle.digest("SHA-256", file)
     const hashArray = Array.from(new Uint8Array(hashBuffer))
     hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("")
   }
-  filename = hashHex.slice(0, hashHex.length / 2)
+  let filename = hashHex.slice(0, hashHex.length / 2)
   const fRandom = hashHex.slice(hashHex.length / 2, hashHex.length)
 
   let stream = FS.open(filename, 'w+')
@@ -58,10 +57,9 @@ const exif_file = async function (file) {
   exif_parser && exif_parser.delete()
   exif_parser = new Module.ExifParser(filename, fRandom)
   let result = exif_parser.exif_read()
-  postMessage({ type: 'exif', data: result })
+  postMessage({ type: 'exif', data: result, image_name: filename })
 }
 
 Module.onRuntimeInitialized = function () {
   postMessage({ type: 'wasm', data: {} })
 }
-

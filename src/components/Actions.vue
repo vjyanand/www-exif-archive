@@ -4,7 +4,7 @@ import { Dismiss } from 'flowbite';
 
 const pageStore = usePageStore()
 
-pageStore.pworker.onmessage = function (e) {
+pageStore.web_worker.onmessage = function (e) {
   let result = e.data
   switch (result.type) {
     case 'wasm':
@@ -14,6 +14,7 @@ pageStore.pworker.onmessage = function (e) {
     case 'exif':
       pageStore.work_flow_state = 'LIST'
       pageStore.setTableData(result.data)
+      pageStore.image_name = result.image_name
       break
     case 'delete':
       let payload = JSON.parse(result.data)
@@ -24,7 +25,6 @@ pageStore.pworker.onmessage = function (e) {
         removeRow(payload['key'])
         showToast(`${payload['key']} is removed`)
       }
-      console.log(payload)
       break
     case 'delete_all':
       let payload_delete_all = JSON.parse(result.data)
@@ -35,8 +35,10 @@ pageStore.pworker.onmessage = function (e) {
       console.log(payload_delete_all)
       break
     case 'download':
-      downloadBlob(result.data, 'a.jpeg', 'image/jpeg')
+      let download_file_name = "mod_" + pageStore.file_name
+      downloadBlob(result.data, download_file_name, 'image/jpeg')
       break
+
     default:
       console.log('default')
   }
@@ -48,7 +50,7 @@ const cancelTable = (e) => {
 }
 
 function download_file(e) {
-  pageStore.pworker.postMessage({ type: "download" })
+  pageStore.postMessage({ type: "download", filename: pageStore.image_name })
 }
 
 function removeRow(key) {
@@ -59,7 +61,7 @@ function removeRow(key) {
 }
 
 function delete_all_exif(e) {
-  pageStore.pworker.postMessage({ type: "delete_all" })
+  pageStore.postMessage({ type: "delete_all" })
 }
 
 const downloadBlob = (data, fileName) => {
@@ -72,6 +74,16 @@ const downloadBlob = (data, fileName) => {
   const url = window.URL.createObjectURL(blob)
   downloadURL(url, fileName)
   setTimeout(() => window.URL.revokeObjectURL(url), 1000)
+}
+
+const downloadURL = (data, fileName) => {
+  const a = document.createElement('a')
+  a.href = data
+  a.download = fileName
+  document.body.appendChild(a)
+  a.style.display = 'none'
+  a.click()
+  a.remove()
 }
 
 const showToast = (message, type) => {
@@ -90,18 +102,6 @@ const showToast = (message, type) => {
     const dismiss = new Dismiss(toastDiv);
     dismiss.hide();
   }, 2000);
-
-
-}
-
-const downloadURL = (data, fileName) => {
-  const a = document.createElement('a')
-  a.href = data
-  a.download = fileName
-  document.body.appendChild(a)
-  a.style.display = 'none'
-  a.click()
-  a.remove()
 }
 
 </script>

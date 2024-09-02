@@ -1,15 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { usePageStore } from '@/stores/exif'
-import NoTable from './NoTable.vue'
 import { Tooltip } from 'flowbite';
 
 const pageStore = usePageStore()
 const mtable = ref() //Ref to table
-const noTableData = ref(false)
-
 onMounted(() => {
-  const data = pageStore.table_data
+  const data = pageStore.exif_data
   let result = JSON.parse(data);
   let exif = result["exif"];
 
@@ -59,24 +56,25 @@ onMounted(() => {
 
   function delete_exif(e) {
     let exif_key = e.target.parentNode.parentNode.getAttribute("data-key")
-    pageStore.pworker.postMessage({ type: "delete", exif_key: exif_key })
+    pageStore.postMessage({ type: "delete", exif_key: exif_key })
   }
 
 })
 </script>
 <template>
   <div class="min-h-screen p-2 overflow-x-auto relative md:mb-12">
-    <table class="select-none font-lato max-w-5xl mx-auto my-2" ref="mtable"></table>
-    
+    <table class="select-none font-lato max-w-5xl mx-auto my-2" ref="mtable">
 
+    </table>
 
-<div id="toast" class="invisible fixed top-5 right-1 flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
-    <svg class="w-5 h-5 text-blue-600 dark:text-blue-500 rotate-45" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 17 8 2L9 1 1 19l8-2Zm0 0V9"/>
-    </svg>
-    <div id="toast-message" class="ps-4 text-sm font-normal">Message sent successfully.</div>
-</div>
-
+    <div id="toast" class="invisible fixed top-5 right-1 flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
+      <svg class="w-5 h-5 text-blue-600 dark:text-blue-500 rotate-45" aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="m9 17 8 2L9 1 1 19l8-2Zm0 0V9" />
+      </svg>
+      <div id="toast-message" class="ps-4 text-sm font-normal">Message sent successfully.</div>
+    </div>
 
   </div>
 </template>
