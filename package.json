@@ -5,12 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
+    "serve": "vue-cli-service serve",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@vue/cli-service": "^5.0.8",
+    "cosmiconfig": "^7.0.0",
     "flowbite": "^2.5.1",
     "pinia": "^2.2.2",
     "vue": "^3.4.38",
