@@ -16,9 +16,6 @@ onMounted(() => {
   exif.unshift({ "label": "Byte Order", "value": (result["byte_order"] == 1 ? "littleEndian" : "bigEndian"), "key": "byte_order", "typeName": "" })
   const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)
   const tbl = mtable.value;
-  <div v-if="ok">
-    a
-  </div>
   for (const index in exif) {
     const row = exif[index]
     const tr = tbl.insertRow();
@@ -64,7 +61,20 @@ onMounted(() => {
 
 })
 </script>
+<script>
+export default {
+  data: function () {
+    return {
+      fields: ["a", "b"]
+    }
+  }
+}
+</script>
 <template>
+  <div v-for="field in fields">
+    a
+  </div>
+
   <div class="min-h-screen p-2 overflow-x-auto relative md:mb-12">
     <table class="select-none font-lato max-w-5xl mx-auto my-2" ref="mtable">
 
