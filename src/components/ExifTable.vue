@@ -61,13 +61,28 @@ onMounted(() => {
 
 })
 </script>
+<script>
+export default {
+  data: function () {
+    return {
+      fields: ["a", "b"]
+    }
+  }
+}
+</script>
 <template>
+  <div v-for="field in fields">
+    a
+  </div>
+
   <div class="min-h-screen p-2 overflow-x-auto relative md:mb-12">
     <table class="select-none font-lato max-w-5xl mx-auto my-2" ref="mtable">
 
     </table>
 
-    <div id="toast" class="invisible fixed top-5 right-1 flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
+    <div id="toast"
+      class="invisible fixed top-5 right-1 flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800"
+      role="alert">
       <svg class="w-5 h-5 text-blue-600 dark:text-blue-500 rotate-45" aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
