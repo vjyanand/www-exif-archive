@@ -2,11 +2,11 @@
 import { usePageStore } from '@/stores/exif'
 import { Tooltip } from 'flowbite';
 import { onMounted } from 'vue';
+import { ref } from 'vue'
 
+const editing_field = ref(null)
 const pageStore = usePageStore()
-let f = pageStore.file_name
-const data = pageStore.exif_data
-let result = JSON.parse(data);
+const result = pageStore.exif_data
 let exif = result["exif"];
 exif.unshift({ "label": "Mime", "value": result["mime"], "key": "mime", "typeName": "" })
 exif.unshift({ "label": "Pixel Height", "value": result["height"], "key": "pixel_height", "typeName": "" })
@@ -21,7 +21,21 @@ onMounted(() => {
     new Tooltip(tooltip_span, outer_span, { triggerType: isTouch ? 'click' : 'hover', onShow: () => { console.log("A") } });
   }
 })
+
+function set_editing_field(field) {
+  editing_field.value = field
+}
+function update_field(field) {
+
+}
+
+function delete_field(field) {
+  console.log("Deleting - delete_field")
+  pageStore.postMessage({ type: "delete", exif_key: field })
+}
+
 </script>
+
 <template>
 
   <table>
@@ -37,9 +51,19 @@ onMounted(() => {
             <div class="tooltip-arrow" data-popper-arrow=""></div>
           </span>
         </td>
-        <template v-if="('editing' in field) === false">
+        <template v-if="field.key !== editing_field">
           <td>{{ field.value }}</td>
-          <td><img width="22" src="/assets/img/edit-button.svg" /></td>
+          <td><img width="220" @click="set_editing_field(`${field.key}`)" src="/assets/img/edit-button.svg" /></td>
+        </template>
+        <template v-else>
+
+          <td><input type="text" v-bind:placeholder="field.value" v-bind:value="field.value"/></td>
+          <td><span style="display: flex;justify-content: space-between;">
+              <img width="22" @click="update_field(`${field.key}`)" src="/assets/img/trash-button.svg" />
+              <img width="22" @click="delete_field(`${field.key}`)" src="/assets/img/save-button.svg" />
+              <img width="22" @click="set_editing_field('')" src="/assets/img/cancel-button.svg" />
+            </span>
+          </td>
         </template>
       </tr>
     </template>
