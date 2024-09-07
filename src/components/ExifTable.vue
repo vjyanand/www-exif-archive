@@ -59,8 +59,8 @@ function delete_field(field) {
 
           <td><input type="text" v-bind:placeholder="field.value" v-bind:value="field.value"/></td>
           <td><span style="display: flex;justify-content: space-between;">
-              <img width="22" @click="update_field(`${field.key}`)" src="/assets/img/trash-button.svg" />
-              <img width="22" @click="delete_field(`${field.key}`)" src="/assets/img/save-button.svg" />
+              <img width="22" @click="delete_field(`${field.key}`)" src="/assets/img/trash-button.svg" />
+              <img width="22" @click="update_field(`${field.key}`)" src="/assets/img/save-button.svg" />
               <img width="22" @click="set_editing_field('')" src="/assets/img/cancel-button.svg" />
             </span>
           </td>
