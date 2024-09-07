@@ -3,7 +3,7 @@ import { RouterLink } from 'vue-router'
 import { ref } from 'vue'
 
 const links = [
-  { to: 'home', text: 'Home' },
+  { to: '/', text: 'Home' },
   { to: '/blog', text: 'Blog' },
   { to: '/help', text: 'Help' }
 ]
