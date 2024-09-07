@@ -26,6 +26,11 @@ export const usePageStore = defineStore('exif', () => {
     web_worker.value.postMessage(payload)
   }
 
+  function remove_exif_data(key) {
+    let index = exif_data.value.exif.findIndex((row) => row.key === key)
+    index !== -1 && exif_data.value.exif.splice(index, 1)
+  }
+
   return {
     web_worker,
     work_flow_state,
@@ -35,6 +40,7 @@ export const usePageStore = defineStore('exif', () => {
     toast_timer,
     file_name,
     image_name,
+    remove_exif_data,
     clearTableData,
     setWorker,
     setTableData,

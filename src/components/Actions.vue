@@ -13,7 +13,8 @@ pageStore.web_worker.onmessage = function (e) {
       break
     case 'exif':
       pageStore.work_flow_state = 'LIST'
-      pageStore.setTableData(result.data)
+      let exif_data = JSON.parse(result.data)
+      pageStore.setTableData(exif_data)
       pageStore.image_name = result.image_name
       break
     case 'delete':
@@ -22,7 +23,7 @@ pageStore.web_worker.onmessage = function (e) {
         if (pageStore.exif_changed === false) {
           pageStore.exif_changed = true
         }
-        removeRow(payload['key'])
+        pageStore.remove_exif_data(payload['key']);
         showToast(`${payload['key']} is removed`)
       }
       break
@@ -51,13 +52,6 @@ const cancelTable = (e) => {
 
 function download_file(e) {
   pageStore.postMessage({ type: "download", filename: pageStore.image_name })
-}
-
-function removeRow(key) {
-  let row = document.querySelectorAll(`[data-key="${key}"]`);
-  if (row.length === 1) {
-    row[0].style.display = 'none';
-  }
 }
 
 function delete_all_exif(e) {
@@ -123,4 +117,16 @@ const showToast = (message, type) => {
       Download
     </button>
   </div>
+
+  <div id="toast"
+    class="invisible fixed top-5 right-1 flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800"
+    role="alert">
+    <svg class="w-5 h-5 text-blue-600 dark:text-blue-500 rotate-45" aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="m9 17 8 2L9 1 1 19l8-2Zm0 0V9" />
+    </svg>
+    <div id="toast-message" class="ps-4 text-sm font-normal">Message sent successfully.</div>
+  </div>
+
 </template>
